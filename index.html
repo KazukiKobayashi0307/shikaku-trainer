@@ -260,67 +260,175 @@ const FigOpeQ6 = () => (
 );
 
 const FigOpeQ7 = () => (
-  <div style={{margin:"16px 0"}}>
-    <div style={{fontSize:"12px", color:"#57534e", marginBottom:"8px", textAlign:"center"}}>※ 元のPERT図を参照してください。各作業の1日削減コスト：</div>
+  <div style={{margin:"16px 0", display:"flex", flexDirection:"column", alignItems:"center", gap:"10px"}}>
+    <div style={{width:"100%", maxWidth:"560px"}}>
+      <div style={{fontSize:"12px", fontWeight:600, color:"#44403c", marginBottom:"4px", textAlign:"center"}}>アローダイアグラム(PERT図)</div>
+      <svg viewBox="0 0 600 300" style={{width:"100%", background:"#fff", border:"1px solid #d6d3d1", borderRadius:"4px"}}>
+        <defs><marker id="ah7" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#1f2937"/></marker></defs>
+        {/* edges */}
+        {[
+          [40,160,150,160,"作業A 3日",95,150],
+          [150,160,290,70,"作業B 5日",205,100],
+          [150,160,390,160,"作業C 6日",250,150],
+          [150,160,290,250,"作業D 7日",200,225],
+          [290,70,390,160,"作業E 4日",355,100],
+          [290,250,490,250,"作業F 6日",385,243],
+          [390,160,560,160,"作業G 6日",470,150],
+          [390,160,490,250,"作業H 6日",455,200],
+          [490,250,560,160,"作業I 3日",540,210],
+        ].map(([x1,y1,x2,y2,lbl,lx,ly],i)=>{
+          const ang=Math.atan2(y2-y1,x2-x1); const r=22;
+          const sx=x1+Math.cos(ang)*r, sy=y1+Math.sin(ang)*r, ex=x2-Math.cos(ang)*r, ey=y2-Math.sin(ang)*r;
+          return (<g key={i}><line x1={sx} y1={sy} x2={ex} y2={ey} stroke="#1f2937" strokeWidth="1.4" markerEnd="url(#ah7)" /><text x={lx} y={ly} fontSize="11" fill="#1d4ed8" textAnchor="middle">{lbl}</text></g>);
+        })}
+        {/* dummy 4->5 */}
+        {(() => { const x1=290,y1=250,x2=390,y2=160; const ang=Math.atan2(y2-y1,x2-x1); const r=22; const sx=x1+Math.cos(ang)*r,sy=y1+Math.sin(ang)*r,ex=x2-Math.cos(ang)*r,ey=y2-Math.sin(ang)*r; return <line x1={sx} y1={sy} x2={ex} y2={ey} stroke="#1f2937" strokeWidth="1.2" strokeDasharray="4 3" markerEnd="url(#ah7)" />; })()}
+        {/* nodes */}
+        {[["1",40,160],["2",150,160],["3",290,70],["4",290,250],["5",390,160],["6",490,250],["7",560,160]].map(([n,x,y])=>(
+          <g key={n}><circle cx={x} cy={y} r="18" fill="#eff6ff" stroke="#1f2937" strokeWidth="1.4" /><text x={x} y={y+5} fontSize="14" fill="#1f2937" fontWeight="bold" textAnchor="middle">{n}</text></g>
+        ))}
+      </svg>
+    </div>
     <div style={{display:"flex", justifyContent:"center"}}>
-      <table style={{borderCollapse:"collapse", fontSize:"14px"}}>
-        <thead><tr><th style={cellTh}>作業名</th><th style={cellTh}>削減コスト(万円/日)</th></tr></thead>
-        <tbody>{[["A",8],["B",7],["C",5],["D",4],["E",7],["F",6],["G",4],["H",6],["I",7]].map(([n,c])=>(<tr key={n}><td style={cellTdL}>作業{n}</td><td style={cellTd}>{c}</td></tr>))}</tbody>
+      <table style={{borderCollapse:"collapse", fontSize:"13px"}}>
+        <thead><tr><th style={cellTh}>作業名</th>{["A","B","C","D","E","F","G","H","I"].map(n=>(<th key={n} style={cellTh}>{n}</th>))}</tr></thead>
+        <tbody><tr><td style={cellTdL}>1日短縮コスト(万円/日)</td>{[8,7,5,4,7,6,4,6,7].map((c,i)=>(<td key={i} style={cellTd}>{c}</td>))}</tr></tbody>
       </table>
     </div>
   </div>
 );
 
-const FigOpeQ12 = () => (
-  <div style={{margin:"16px 0", display:"flex", flexDirection:"column", alignItems:"center", gap:"12px"}}>
-    <div><div style={{fontSize:"12px", fontWeight:600, color:"#44403c", marginBottom:"4px", textAlign:"center"}}>表1 商品の保管スケジュール</div>
-      <table style={{borderCollapse:"collapse", fontSize:"14px"}}><thead><tr><th style={cellTh}>商品</th><th style={cellTh}>保管開始</th><th style={cellTh}>保管終了</th></tr></thead>
-        <tbody>{[["商品1","8:00","11:00"],["商品2","8:30","9:30"],["商品3","9:00","12:00"],["商品4","10:00","11:30"],["商品5","11:00","12:30"]].map(([n,s,e])=>(<tr key={n}><td style={cellTdL}>{n}</td><td style={cellTd}>{s}</td><td style={cellTd}>{e}</td></tr>))}</tbody></table></div>
-    <div><div style={{fontSize:"12px", fontWeight:600, color:"#44403c", marginBottom:"4px", textAlign:"center"}}>表2 入出庫口と保管棚との距離</div>
-      <table style={{borderCollapse:"collapse", fontSize:"14px"}}><thead><tr><th style={cellTh}></th><th style={cellTh}>入出庫口からの距離</th></tr></thead>
-        <tbody>{[["棚1",1],["棚2",2],["棚3",3],["棚4",4]].map(([n,d])=>(<tr key={n}><td style={cellTdL}>{n}</td><td style={cellTd}>{d}</td></tr>))}</tbody></table></div>
-    <div style={{fontSize:"12px", color:"#57534e", textAlign:"center", maxWidth:"28rem"}}>※ 商品保管時間例: 商品1は8:00〜11:00。各棚に同時に2商品以上は保管不可。</div>
-  </div>
-);
+const FigOpeQ12 = () => {
+  const x0=70, hourW=72, y0=34, rowH=26, barH=15;
+  const tx=(h)=>x0+(h-8)*hourW;
+  const bars=[["商品1",8,11],["商品2",9,12],["商品3",9,10],["商品4",10.5,12.5],["商品5",11.5,13]];
+  return (
+    <div style={{margin:"16px 0", display:"flex", flexDirection:"column", alignItems:"center", gap:"12px"}}>
+      <div style={{width:"100%", maxWidth:"30rem"}}>
+        <div style={{fontSize:"12px", fontWeight:600, color:"#44403c", marginBottom:"4px", textAlign:"center"}}>表1 商品の保管スケジュール</div>
+        <svg viewBox="0 0 480 190" style={{width:"100%", background:"#fff", border:"1px solid #d6d3d1", borderRadius:"4px"}}>
+          {[8,9,10,11,12,13].map(h=>(<g key={h}><line x1={tx(h)} y1={y0-8} x2={tx(h)} y2={y0+5*rowH} stroke="#e7e5e4" /><text x={tx(h)} y={y0-12} fontSize="10" fill="#64748b" textAnchor="middle">{h}:00</text></g>))}
+          {bars.map(([n,s,e],i)=>{const y=y0+i*rowH;return (<g key={n}><text x={x0-12} y={y+barH-2} fontSize="11" fill="#1f2937" textAnchor="end">{n}</text><rect x={tx(s)} y={y} width={tx(e)-tx(s)} height={barH} rx="2" fill="#94a3b8" stroke="#475569" /></g>);})}
+        </svg>
+      </div>
+      <div><div style={{fontSize:"12px", fontWeight:600, color:"#44403c", marginBottom:"4px", textAlign:"center"}}>表2 入出庫口と保管棚との距離</div>
+        <table style={{borderCollapse:"collapse", fontSize:"13px"}}><thead><tr><th style={cellTh}>保管棚</th>{["棚1","棚2","棚3","棚4"].map(n=>(<th key={n} style={cellTh}>{n}</th>))}</tr></thead>
+          <tbody><tr><td style={cellTdL}>入出庫口からの距離</td>{[1,2,3,4].map(d=>(<td key={d} style={cellTd}>{d}</td>))}</tr></tbody></table></div>
+      <div style={{fontSize:"11px", color:"#78716c", textAlign:"center", maxWidth:"30rem"}}>※ 1つの棚に同時に2つ以上の商品は保管できない。入出庫口に近い・利用可能な棚を優先利用する。</div>
+    </div>
+  );
+};
 
 const FigOpeQ15 = () => (
   <div style={{margin:"16px 0", display:"flex", flexDirection:"column", alignItems:"center", gap:"12px"}}>
-    <div style={{width:"100%", maxWidth:"28rem"}}>
-      <div style={{fontSize:"12px", fontWeight:600, color:"#44403c", marginBottom:"4px", textAlign:"center"}}>図1 レイアウト(直線配置)</div>
-      <svg viewBox="0 0 480 80" style={{width:"100%", background:"#fff", border:"1px solid #d6d3d1", borderRadius:"4px"}}>
-        {[["入庫口",40],["旋盤",140],["フライス盤",240],["ボール盤",340],["出庫口",440]].map(([n,x])=>(<g key={n}><rect x={x-35} y="25" width="70" height="30" fill="#f1f5f9" stroke="#1f2937" strokeWidth="1" /><text x={x} y="44" fontSize="11" fill="#1f2937" textAnchor="middle">{n}</text></g>))}
-        <line x1="75" y1="40" x2="105" y2="40" stroke="#1f2937" /><line x1="175" y1="40" x2="205" y2="40" stroke="#1f2937" /><line x1="275" y1="40" x2="305" y2="40" stroke="#1f2937" /><line x1="375" y1="40" x2="405" y2="40" stroke="#1f2937" />
-        <text x="90" y="72" fontSize="9" fill="#64748b" textAnchor="middle">距離1</text><text x="190" y="72" fontSize="9" fill="#64748b" textAnchor="middle">距離1</text><text x="290" y="72" fontSize="9" fill="#64748b" textAnchor="middle">距離1</text><text x="390" y="72" fontSize="9" fill="#64748b" textAnchor="middle">距離1</text>
+    <div style={{width:"100%", maxWidth:"30rem"}}>
+      <div style={{fontSize:"12px", fontWeight:600, color:"#44403c", marginBottom:"4px", textAlign:"center"}}>図1 レイアウト(入庫口から出庫口へ直線配置)</div>
+      <svg viewBox="0 0 500 80" style={{width:"100%", background:"#fff", border:"1px solid #d6d3d1", borderRadius:"4px"}}>
+        {[["入庫口",45],["旋盤",150],["フライス盤",255],["ボール盤",360],["出庫口",460]].map(([n,x])=>(<g key={n}><rect x={x-38} y="25" width="76" height="30" fill="#f1f5f9" stroke="#1f2937" strokeWidth="1" /><text x={x} y="44" fontSize="11" fill="#1f2937" textAnchor="middle">{n}</text></g>))}
+        {[[83,112],[188,217],[293,322],[398,422]].map(([x1,x2],i)=>(<line key={i} x1={x1} y1="40" x2={x2} y2="40" stroke="#1f2937" />))}
+        {[97,202,307,410].map((x,i)=>(<text key={i} x={x} y="70" fontSize="9" fill="#64748b" textAnchor="middle">距離2m</text>))}
       </svg>
     </div>
     <div><div style={{fontSize:"12px", fontWeight:600, color:"#44403c", marginBottom:"4px", textAlign:"center"}}>図2 フロムツウチャート(週あたり運搬回数)</div>
       <table style={{borderCollapse:"collapse", fontSize:"12px"}}>
-        <thead><tr>{["To/From","入庫口","旋盤","フライス盤","ボール盤","出庫口"].map((h,i)=>(<th key={i} style={{border:"1px solid #a8a29e", padding:"4px 8px", background:"#f5f5f4"}}>{h}</th>))}</tr></thead>
-        <tbody>{[["入庫口","","6","4","","20"],["旋盤","","","","12",""],["フライス盤","16","","","4",""],["ボール盤","","","","","8"],["出庫口","","","","",""]].map((row,i)=>(<tr key={i}><td style={{border:"1px solid #a8a29e", padding:"4px 8px", background:"#fafaf9", fontWeight:600}}>{row[0]}</td>{row.slice(1).map((v,j)=>(<td key={j} style={{border:"1px solid #a8a29e", padding:"4px 8px", textAlign:"center"}}>{v}</td>))}</tr>))}</tbody>
+        <thead><tr>{["From＼To","入庫口","旋盤","フライス盤","ボール盤","出庫口"].map((h,i)=>(<th key={i} style={{border:"1px solid #a8a29e", padding:"4px 8px", background:"#f5f5f4"}}>{h}</th>))}</tr></thead>
+        <tbody>{[["入庫口","","6","4","20",""],["旋盤","","","","","12"],["フライス盤","","16","","","4"],["ボール盤","","","","","8"],["出庫口","","","","",""]].map((row,i)=>(<tr key={i}><td style={{border:"1px solid #a8a29e", padding:"4px 8px", background:"#fafaf9", fontWeight:600}}>{row[0]}</td>{row.slice(1).map((v,j)=>(<td key={j} style={{border:"1px solid #a8a29e", padding:"4px 8px", textAlign:"center", background: j===i? "#ede9e6":"#fff"}}>{v}</td>))}</tr>))}</tbody>
       </table></div>
   </div>
 );
 
-const FigOpeQ16 = () => (
-  <div style={{margin:"16px 0", display:"flex", justifyContent:"center"}}>
-    <svg viewBox="0 0 480 100" style={{width:"100%", maxWidth:"28rem", background:"#fff", border:"1px solid #d6d3d1", borderRadius:"4px"}}>
-      {[["製品企画",60],["製品設計",150],["部品調達",240],["生産",330],["販売",420]].map(([n,x])=>(<g key={n}><rect x={x-40} y="35" width="80" height="32" fill="#f1f5f9" stroke="#1f2937" /><text x={x} y="55" fontSize="11" fill="#1f2937" textAnchor="middle">{n}</text></g>))}
-      {[100,190,280,370].map((x,i)=>(<polygon key={i} points={`${x},45 ${x+10},51 ${x},57`} fill="#1f2937" />))}
-      <text x="240" y="20" fontSize="11" fill="#475569" textAnchor="middle">DP(デカップリング・ポイント)を適切に設定</text>
-    </svg>
-  </div>
-);
+const FigOpeQ16 = () => {
+  const steps = [
+    ["製品企画・設計",false],["原材料調達",false],["原材料在庫",true],["部品加工",false],
+    ["部品在庫",true],["製品組立",false],["製品在庫",true],["出荷・流通",false],
+    ["流通在庫",true],["販売・サービス",false]
+  ];
+  return (
+    <div style={{margin:"16px 0"}}>
+      <div style={{fontSize:"12px", color:"#57534e", marginBottom:"8px", textAlign:"center"}}>生産プロセス(網掛けは在庫＝DPの候補位置)</div>
+      <div style={{display:"flex", flexWrap:"wrap", alignItems:"center", justifyContent:"center", gap:"4px"}}>
+        {steps.map(([n,inv],i)=>(
+          <React.Fragment key={i}>
+            <div style={{padding:"6px 8px", borderRadius:"5px", border:"1px solid #1f2937", fontSize:"11px", lineHeight:1.25, textAlign:"center", minWidth:"58px",
+              background: inv? "#d6d3d1":"#f8fafc", fontWeight: inv?600:400, color:"#1f2937"}}>{n}</div>
+            <span style={{color:"#78716c", fontSize:"13px"}}>→</span>
+          </React.Fragment>
+        ))}
+        <div style={{padding:"8px 14px", borderRadius:"999px", border:"1px solid #1f2937", fontSize:"11px", fontWeight:600, background:"#eff6ff", color:"#1f2937"}}>顧客</div>
+      </div>
+    </div>
+  );
+};
 
 const FigOpeQ18 = () => {
-  const ox=50,oy=230;
-  return (<FigureFrame viewBox="0 0 420 270">
-    <line x1={ox} y1={oy} x2="395" y2={oy} {...axisStyle} /><line x1={ox} y1="20" x2={ox} y2={oy} {...axisStyle} /><text x="400" y={oy+4} fontSize="11" fill="#1f2937">時間</text><text x="32" y="18" fontSize="11" fill="#1f2937">累積数量</text>
-    <polyline points={`${ox},${oy} 110,160 200,90 290,55 370,40`} stroke="#1d4ed8" strokeWidth="2" fill="none" /><text x="375" y="42" fontSize="11" fill="#1d4ed8" fontWeight="bold">投入</text>
-    <polyline points={`${ox},${oy} 150,200 240,150 320,100 380,75`} stroke="#b91c1c" strokeWidth="2" fill="none" /><text x="385" y="78" fontSize="11" fill="#b91c1c" fontWeight="bold">産出</text>
-    <line x1="170" y1="120" x2="170" y2="180" stroke="#1f2937" strokeDasharray="3 3" /><text x="170" y={oy+14} fontSize="11" fill="#1f2937" textAnchor="middle">α</text><text x="155" y="155" fontSize="11" fill="#0f766e" fontWeight="bold">A</text>
-    <text x="240" y={oy+14} fontSize="11" fill="#1f2937" textAnchor="middle">β</text>
-    <line x1="170" y1="105" x2="240" y2="105" stroke="#9333ea" strokeDasharray="3 3" /><text x="200" y="100" fontSize="11" fill="#9333ea" fontWeight="bold" textAnchor="middle">B</text>
+  const ox=55, oy=245;
+  // both lines start at the origin (ox,oy); input rises first, kinks at β(x=150); output starts flat then rises later
+  return (<FigureFrame viewBox="0 0 470 290">
+    <line x1={ox} y1={oy} x2="450" y2={oy} {...axisStyle} /><line x1={ox} y1="25" x2={ox} y2={oy} {...axisStyle} />
+    <text x="452" y={oy+4} fontSize="11" fill="#1f2937">時間</text><text x="30" y="20" fontSize="11" fill="#1f2937">累積量</text>
+    <text x={ox-8} y={oy+15} fontSize="11" fill="#1f2937" textAnchor="end">0</text>
+    {/* input cumulative line (blue): from origin, kink at β(x=150) */}
+    <polyline points={`${ox},${oy} 150,150 440,55`} stroke="#1d4ed8" strokeWidth="2" fill="none" />
+    <text x="120" y="150" fontSize="11" fill="#1d4ed8" fontWeight="bold" textAnchor="end">投入量の累積線</text>
+    {/* output cumulative line (red): from origin, stays low until x≈165 then rises (lead-time shift) */}
+    <polyline points={`${ox},${oy} 165,${oy} 230,160 445,85`} stroke="#b91c1c" strokeWidth="2" fill="none" />
+    <text x="330" y="150" fontSize="11" fill="#b91c1c" fontWeight="bold">産出量の累積線</text>
+    {/* β and α on x-axis (β < α) */}
+    <line x1="150" y1="150" x2="150" y2={oy} stroke="#9ca3af" strokeDasharray="3 3" /><text x="150" y={oy+15} fontSize="11" fill="#1f2937" textAnchor="middle">β</text>
+    <line x1="215" y1="118" x2="215" y2={oy} stroke="#9ca3af" strokeDasharray="3 3" /><text x="215" y={oy+15} fontSize="11" fill="#1f2937" textAnchor="middle">α</text>
+    {/* A: vertical gap at α */}
+    {(() => { const xa=215;
+      const iy=150+(55-150)*((xa-150)/(440-150));
+      const oyy=160+(85-160)*((xa-230)/(445-230));
+      return (<g><line x1={xa} y1={iy} x2={xa} y2={oyy} stroke="#0f766e" strokeWidth="1.5" markerStart="url(#a18s)" markerEnd="url(#a18e)" /><text x={xa+8} y={(iy+oyy)/2+4} fontSize="12" fill="#0f766e" fontWeight="bold">A</text></g>); })()}
+    {/* B: horizontal gap at a low cumulative level */}
+    {(() => { const yb=205;
+      const ix=ox+(150-ox)*((yb-oy)/(150-oy));
+      const oxx=165+(230-165)*((yb-oy)/(160-oy));
+      return (<g><line x1={ix} y1={yb} x2={oxx} y2={yb} stroke="#9333ea" strokeWidth="1.5" markerStart="url(#a18s)" markerEnd="url(#a18e)" /><text x={(ix+oxx)/2} y={yb-6} fontSize="12" fill="#9333ea" fontWeight="bold" textAnchor="middle">B</text></g>); })()}
+    <defs>
+      <marker id="a18e" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#374151"/></marker>
+      <marker id="a18s" markerWidth="8" markerHeight="8" refX="0" refY="3" orient="auto"><path d="M6,0 L0,3 L6,6 Z" fill="#374151"/></marker>
+    </defs>
   </FigureFrame>);
+};
+
+const FigOpeQ36 = () => {
+  const Box = ({x,y,l1,l2}) => (<g><rect x={x} y={y} width="78" height="38" rx="3" fill="#f8fafc" stroke="#1f2937" /><text x={x+39} y={y+16} fontSize="11" fill="#1f2937" textAnchor="middle">{l1}</text><text x={x+39} y={y+30} fontSize="11" fill="#1f2937" textAnchor="middle">{l2}</text></g>);
+  const Panel = ({title, edges}) => (
+    <div style={{width:"100%", maxWidth:"24rem"}}>
+      <div style={{fontSize:"12px", fontWeight:700, color:"#44403c", marginBottom:"4px", textAlign:"center"}}>{title}</div>
+      <svg viewBox="0 0 340 200" style={{width:"100%", background:"#fff", border:"1px solid #d6d3d1", borderRadius:"4px"}}>
+        <defs>
+          <marker id="m36s" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#1f2937"/></marker>
+          <marker id="m36d" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#78716c"/></marker>
+        </defs>
+        <Box x={20} y={28} l1="X県" l2="倉庫Ax" /><Box x={242} y={28} l1="Y県" l2="倉庫Ay" />
+        <Box x={20} y={134} l1="X県" l2="倉庫Bx" /><Box x={242} y={134} l1="Y県" l2="倉庫By" />
+        {edges.map((e,i)=>{
+          const dash=e.t==="空"; 
+          return (<g key={i}><line x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2} stroke={dash?"#78716c":"#1f2937"} strokeWidth="1.4" strokeDasharray={dash?"5 4":"0"} markerEnd={dash?"url(#m36d)":"url(#m36s)"} />{e.lbl && <text x={(e.x1+e.x2)/2} y={e.ly} fontSize="11" fill={dash?"#78716c":"#1d4ed8"} textAnchor="middle" fontWeight="bold">{e.lbl}</text>}</g>);
+        })}
+      </svg>
+    </div>
+  );
+  return (
+    <div style={{margin:"16px 0", display:"flex", flexDirection:"column", alignItems:"center", gap:"14px"}}>
+      <div style={{fontSize:"11px", color:"#57534e"}}>実線→：実車　／　破線⇢：空車</div>
+      <Panel title="【取組前】A社・B社が別々に運行" edges={[
+        {x1:98,y1:42,x2:242,y2:42,t:"実",lbl:"A社 実車",ly:36},
+        {x1:242,y1:55,x2:98,y2:55,t:"空",lbl:"空車",ly:70},
+        {x1:242,y1:148,x2:98,y2:148,t:"実",lbl:"B社 実車",ly:142},
+        {x1:98,y1:161,x2:242,y2:161,t:"空",lbl:"空車",ly:176},
+      ]} />
+      <Panel title="【取組後】1台で帰り荷を確保(連続運行)" edges={[
+        {x1:98,y1:47,x2:242,y2:47,t:"実",lbl:"①A社 実車",ly:38},
+        {x1:281,y1:66,x2:281,y2:134,t:"空",lbl:"②空車",ly:104},
+        {x1:242,y1:153,x2:98,y2:153,t:"実",lbl:"③B社 実車",ly:172},
+        {x1:59,y1:134,x2:59,y2:66,t:"空",lbl:"④空車",ly:104},
+      ]} />
+    </div>
+  );
 };
 
 const FigOpeQ28 = () => (
@@ -430,7 +538,7 @@ const FigFinQ20 = () => (
 
 const FIGURE_MAP = {
   EcoQ1:FigEcoQ1,EcoQ2:FigEcoQ2,EcoQ3:FigEcoQ3,EcoQ5:FigEcoQ5,EcoQ7:FigEcoQ7,EcoQ10:FigEcoQ10,EcoQ14:FigEcoQ14,EcoQ15_2:FigEcoQ15_2,EcoQ16:FigEcoQ16,EcoQ17:FigEcoQ17,EcoQ18:FigEcoQ18,EcoQ19:FigEcoQ19,EcoQ20:FigEcoQ20,
-  OpeQ6:FigOpeQ6,OpeQ7:FigOpeQ7,OpeQ12:FigOpeQ12,OpeQ15:FigOpeQ15,OpeQ16:FigOpeQ16,OpeQ18:FigOpeQ18,OpeQ28:FigOpeQ28,OpeQ40:FigOpeQ40,
+  OpeQ6:FigOpeQ6,OpeQ7:FigOpeQ7,OpeQ12:FigOpeQ12,OpeQ15:FigOpeQ15,OpeQ16:FigOpeQ16,OpeQ18:FigOpeQ18,OpeQ28:FigOpeQ28,OpeQ36:FigOpeQ36,OpeQ40:FigOpeQ40,
   MngQ29_1:FigMngQ29_1,MngQ36:FigMngQ36,
   FinQ20:FigFinQ20,
 };
@@ -478,8 +586,8 @@ const QUESTIONS_OPE = [
   {id:"r7-ope-q9",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第9問",title:"第9問　生産プロセスの合理化",body:"生産プロセスの合理化に関する記述として、最も適切なものはどれか。",options:[{key:"ア",label:"かんばん方式は、工程間の仕掛在庫を低減させるための仕組みである。"},{key:"イ",label:"U字ラインは、振り向き動作を増やすことを主な目的としている。"},{key:"ウ",label:"生産平準化は、段取替えの頻度を抑制することを主な目的としている。"},{key:"エ",label:"アンドンは、設備の異常発生を経営層に通報する仕組みである。"},{key:"オ",label:"シングル段取りは、工程内の総工数を抑制するための活動である。"}],correct:"ア",explanation:"ア 正:かんばんは後工程引取りで仕掛在庫を抑制する仕組み。\nイ 誤:U字ラインは多工程持ちで生産性を上げるためで、振り向き動作の増加が目的ではない。\nウ 誤:平準化は需要変動への対応・小ロット化が目的。段取替えはむしろ増える方向。\nエ 誤:アンドンは現場で異常を可視化する仕組み(経営層への通報ではない)。\nオ 誤:シングル段取り(SMED)は段取り時間を9分以下にする活動で、総工数の抑制ではない。"},
   {id:"r7-ope-q10",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第10問",title:"第10問　生産システムの原則",body:"生産システムの設計や改善で用いられる原則に関する記述として、最も適切なものはどれか。",options:[{key:"ア",label:"3Sは、Standardization、Synchronization、Specializationの頭文字を取ったものである。"},{key:"イ",label:"ECRSの原則は、Eliminate、Combine、Reschedule、Simplifyの頭文字を取ったものである。"},{key:"ウ",label:"DMAICは、Define、Measure、Analyze、Implement、Controlの頭文字を取ったものである。"},{key:"エ",label:"動作経済の原則は、身体の使用、作業場所、設備・工具の3つの分野に大別される。"},{key:"オ",label:"トヨタ生産方式における7つのムダには、設備停止のムダが含まれる。"}],correct:"エ",explanation:"エ 正:動作経済の原則は「身体の使用」「作業場所」「設備・工具」の3分野に大別される。\nア 誤:3Sは Standardization/Simplification/Specialization(または整理・整頓・清掃)。\nイ 誤:ECRSのRはRearrange(交換・組替)。\nウ 誤:DMAICのIはImprove。\nオ 誤:7つのムダは「作りすぎ・手待ち・運搬・加工・在庫・動作・不良」。設備停止は含まれない。"},
   {id:"r7-ope-q11",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第11問",title:"第11問　TPM",body:"TPM(全員参加の生産保全)に関する記述として、最も適切なものはどれか。",options:[{key:"ア",label:"TBM(Time Based Maintenance)は、設備の故障発生後にその都度修理を行う事後保全のことである。"},{key:"イ",label:"自主保全活動の最初の3つのステップは、初期清掃、発生源・困難箇所対策、自主点検である。"},{key:"ウ",label:"集中保全は、各製造現場の運転担当者が自工程の設備保全を行う方式である。"},{key:"エ",label:"保全予防は、設備の計画段階や設計段階において、保全しやすい設備とすることでトラブルを未然に防ぐ活動である。"},{key:"オ",label:"MTBF(平均故障間隔)を短くし、MTTR(平均修復時間)を長くすることが、保全活動の目標である。"}],correct:"エ",explanation:"エ 正:保全予防(MP)は設計段階で故障を防止する活動。\nア 誤:TBMは時間基準保全(予防保全の一種)。事後保全はBMやCM。\nイ 誤:自主保全7ステップの最初の3つは「初期清掃」「発生源・困難箇所対策」「清掃・給油基準作成」。\nウ 誤:集中保全は専門の保全部門が一括で行う方式。記述は部門保全の説明。\nオ 誤:MTBFは長く、MTTRは短くするのが目標(逆)。"},
-  {id:"r7-ope-q12-1",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第12問",title:"第12問 設問1　倉庫保管棚の選定",body:"倉庫における5商品の保管スケジュールと、各保管棚の入出庫口からの距離が下表のとおりである。各棚に同時に2商品以上は保管できないという制約のもと、必要な棚数と移動距離合計の組み合わせとして、最も適切なものを下記の解答群から選べ。なお、移動距離は入出庫口から棚までの片道距離×2を入庫・出庫それぞれで行う。",figure:"OpeQ12",options:[{key:"ア",label:"棚数3つ、総移動距離20"},{key:"イ",label:"棚数3つ、総移動距離24"},{key:"ウ",label:"棚数4つ、総移動距離20"},{key:"エ",label:"棚数4つ、総移動距離24"},{key:"オ",label:"棚数5つ、総移動距離30"}],correct:"ア",explanation:"保管時間の重なりを確認しながら、入出庫口に近い棚(距離1,2)から優先的に割り当てると、必要棚数は3つ、総移動距離はそれぞれの商品の入出庫往復距離合計で20となる。"},
-  {id:"r7-ope-q12-2",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第12問",title:"第12問 設問2　保管時間が短い順に割当てた場合",body:"設問1と同じ条件のもとで、保管開始の早い商品から順に「保管時間が最も短い」棚から割り当てた場合(出入庫口に近い棚を優先する基準ではない)、結果として総移動距離と必要棚数は元の最適解と比べてどう変化するか。最も適切なものを下記の解答群から選べ。",figure:"OpeQ12",options:[{key:"ア",label:"総移動距離が減少し、必要棚数も減少する。"},{key:"イ",label:"総移動距離は増加するが、必要棚数は減少する。"},{key:"ウ",label:"総移動距離は減少するが、必要棚数は増加する。"},{key:"エ",label:"総移動距離は変わらないが、必要棚数は増加する。"},{key:"オ",label:"総移動距離が増加し、必要棚数も増加する。"}],correct:"オ",explanation:"保管時間の短い順に割り当てる方式では、棚の利用効率が落ち必要棚数が増加し、入出庫口から遠い棚も使うため総移動距離も増加する。"},
+  {id:"r7-ope-q12-1",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第12問",title:"第12問 設問1　保管棚の決定(開始時刻の早い順)",body:"フリーロケーション管理が行われている倉庫で、保管時間が表1のとおり予定されている5商品(商品1：8:00〜11:00、商品2：9:00〜12:00、商品3：9:00〜10:00、商品4：10:30〜12:30、商品5：11:30〜13:00)の保管棚を決定する。条件：入出庫は同一の入出庫口を利用、保管棚は4カ所で入出庫口からの距離は棚1=1・棚2=2・棚3=3・棚4=4(表2)、1つの棚に同時に2つ以上は保管できない、指定ルールに従ったうえで入出庫口にできるだけ近い利用可能な棚を利用する。\n保管棚を決定するルールを「保管開始時刻の早い商品から順に保管棚を決定する」にしたとき、商品の総移動距離(5商品を入出庫するための総移動距離)と利用する保管棚の数の組み合わせとして、最も適切なものを下記の解答群から選べ。",figure:"OpeQ12",options:[{key:"ア",label:"商品の総移動距離：20　利用する保管棚の数：3"},{key:"イ",label:"商品の総移動距離：20　利用する保管棚の数：4"},{key:"ウ",label:"商品の総移動距離：26　利用する保管棚の数：3"},{key:"エ",label:"商品の総移動距離：26　利用する保管棚の数：4"},{key:"オ",label:"商品の総移動距離：28　利用する保管棚の数：4"}],correct:"ア",explanation:"保管開始時刻の早い順(商品1→2→3→4→5)に、入出庫口に近い空き棚へ割り当てる。\n・商品1(8:00-11:00)→棚1\n・商品2(9:00-12:00)→棚1は商品1と重複→棚2\n・商品3(9:00-10:00)→棚1・棚2とも重複→棚3\n・商品4(10:30-12:30)→棚1は商品1(〜11:00)と重複、棚2は商品2と重複、棚3は商品3が10:00出庫済みで空き→棚3\n・商品5(11:30-13:00)→棚1は商品1が11:00に出庫済みで空き→棚1\nよって利用する棚は棚1・棚2・棚3の3つ。\n総移動距離は各商品で「入出庫口→棚→入出庫口」の往復＝棚の距離×2。Σ(棚距離)＝1+2+3+3+1＝10、×2＝20。\nしたがって 総移動距離20・棚数3。"},
+  {id:"r7-ope-q12-2",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第12問",title:"第12問 設問2　ルール変更(保管時間の短い順)",body:"設問1と同じ条件・保管スケジュールのもとで、保管棚を決定するルールを、設問1の「保管開始時刻の早い商品から順」から「保管時間の短い商品から順に保管棚を決定する」に変更したとき、商品の総移動距離と利用する保管棚の数の変化の組み合わせとして、最も適切なものを下記の解答群から選べ。",figure:"OpeQ12",options:[{key:"ア",label:"商品の総移動距離：減る　利用する棚の数：減る"},{key:"イ",label:"商品の総移動距離：減る　利用する棚の数：変化なし"},{key:"ウ",label:"商品の総移動距離：変化なし　利用する棚の数：減る"},{key:"エ",label:"商品の総移動距離：増える　利用する棚の数：変化なし"},{key:"オ",label:"商品の総移動距離：増える　利用する棚の数：増える"}],correct:"オ",explanation:"保管時間：商品3=1時間、商品5=1.5時間、商品4=2時間、商品1=3時間、商品2=3時間。短い順(商品3→5→4→1→2)に入出庫口に近い空き棚へ割り当てる。\n・商品3(9:00-10:00)→棚1\n・商品5(11:30-13:00)→棚1は商品3が10:00出庫済みで空き→棚1\n・商品4(10:30-12:30)→棚1は商品5(11:30〜)と重複→棚2\n・商品1(8:00-11:00)→棚1は商品3と重複、棚2は商品4(10:30〜)と重複→棚3\n・商品2(9:00-12:00)→棚1は商品3・商品5と重複、棚2は商品4と重複、棚3は商品1と重複→棚4\nよって利用する棚は棚1〜棚4の4つ(設問1の3つから増加)。\n総移動距離はΣ(棚距離)×2＝(1+1+2+3+4)×2＝11×2＝22。設問1の20より大きい＝増える。\nしたがって 総移動距離は増える・棚数も増える。"},
   {id:"r7-ope-q13",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第13問",title:"第13問　金属加工技術",body:"金属加工技術に関する記述として、最も適切なものはどれか。",options:[{key:"ア",label:"アーク溶接は、強力なレーザー光を金属に照射して接合する加工法である。"},{key:"イ",label:"ダイカストは、金属塊にハンマーで強い衝撃を加えて変形させる加工法である。"},{key:"ウ",label:"深絞り加工は、金属板をパンチでダイの中に押し込み、容器状の製品を成形する加工法である。"},{key:"エ",label:"フライス加工は、回転する加工物に対してバイトと呼ばれる切削工具を用いて切削する加工法である。"},{key:"オ",label:"へら絞り加工は、金属板をパンチとダイで挟んで成形する加工法である。"}],correct:"ウ",explanation:"ウ 正:深絞りはパンチとダイで金属板を容器状に成形する塑性加工。\nア 誤:アーク溶接はアーク放電で接合(レーザー溶接ではない)。\nイ 誤:ダイカストは溶融金属を金型に圧入する鋳造法。ハンマー打撃は鍛造。\nエ 誤:旋盤加工の説明。フライスは多刃の回転工具で被切削物を切削。\nオ 誤:へら絞りは回転する金属板にへら(押し金)を押し当てて成形する。"},
   {id:"r7-ope-q14",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第14問",title:"第14問　ライン生産方式とセル生産方式",body:"ライン生産方式から1人完結型のセル生産方式へ移行する際の効果や留意点に関する記述として、最も適切なものはどれか。",options:[{key:"ア",label:"1人完結型のセル生産方式は、未経験の作業者でも短時間で習熟できるという利点がある。"},{key:"イ",label:"セル数の決定にあたっては、1人当たりのサイクルタイムを基に必要なセル数を計算する。"},{key:"ウ",label:"1人完結型のセル生産方式は、多品種大量生産に最も適している。"},{key:"エ",label:"ラインバランス効率(ラインバランスロス)は、1人完結型のセル生産方式における重要な評価指標である。"},{key:"オ",label:"1人完結型のセル生産方式は、工程数が多いほど効果的に運用できる。"}],correct:"イ",explanation:"イ 正:必要セル数は需要量と1人当たりのサイクルタイムから決定。\nア 誤:1人完結型は多能工が前提で、習熟に時間がかかる。\nウ 誤:多品種少量生産に向く。\nエ 誤:ラインバランス効率はライン生産の指標。1人完結ではバランスロスが発生しない。\nオ 誤:工程数が多すぎると1人で完結できなくなる。"},
   {id:"r7-ope-q15",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第15問",title:"第15問　フロムツウチャートとΣDI",body:"下図のレイアウトとフロムツウチャートに基づき、現状とレイアウト改善案に関する記述の正誤の組み合わせとして、最も適切なものを下記の解答群から選べ。\n\na　現状のΣDI値(距離と運搬回数の積の総合計)は284である。\nb　逆行運搬回数の合計は54である。\nc　旋盤とフライス盤の位置を入れ替えることでΣDI値は12減少する。",figure:"OpeQ15",options:[{key:"ア",label:"a：正　b：正　c：正"},{key:"イ",label:"a：正　b：誤　c：正"},{key:"ウ",label:"a：正　b：誤　c：誤"},{key:"エ",label:"a：誤　b：正　c：誤"},{key:"オ",label:"a：誤　b：誤　c：正"}],correct:"イ",explanation:"ΣDI=各運搬の(運搬回数×距離)の総和を計算する。本問の運搬回数と距離(隣接間=1)から算出するとa(現状ΣDI=284)とc(旋盤・フライス盤入替で12減少)が成立する。\nbは逆行運搬の回数集計の判定で、54に一致しない。"},
@@ -504,7 +612,7 @@ const QUESTIONS_OPE = [
   {id:"r7-ope-q33",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第33問",title:"第33問　需要予測 (※不採点問題)",body:"※本問題は出題に瑕疵があったため、すべての受験者の解答が正解として扱われる不採点措置となった問題です。\n\n需要予測に関する記述として、最も適切なものはどれか。",options:[{key:"ア",label:"移動平均法を用いた需要予測値に、最近の需要実績をより大きく反映させたい場合、算術平均する過去の実績値の期間をより長くすればよい。"},{key:"イ",label:"月次の時系列データの変動要素の1つである季節変動は、3ヶ月を1つの期として、各期の増加または減少の方向を持続する変動のことである。"},{key:"ウ",label:"指数平滑法を用いた需要予測値は、当期の実績値と前期の予測値の差分に平滑化係数を乗算した値を、前期の予測値に加算した値である。"},{key:"エ",label:"重回帰分析を用いて予測値を求める場合、各説明変数の間に強い相関関係が認められるほど、回帰係数をより適切に推定することができる。"},{key:"オ",label:"予測値と実績値の差を予測誤差とした場合、予測精度は、当該値の符号が正であれば高く、負であれば低いと評価することができる。"}],correct:"ウ",acceptAll:true,explanation:"本問は公式に「すべての受験者の解答を正解として扱う」不採点措置となりました。\n\n参考:各選択肢の通常の判断としては、\nア:期間を長くすると古い実績の影響が増し、最近の実績の重みが下がるので誤り。\nイ:循環変動の説明と季節変動が混同されている。\nウ:指数平滑法の式 F_{t+1}=F_t+α(A_t-F_t) と一致する記述。\nエ:多重共線性の問題が生じ、回帰係数の推定は不安定になる(誤)。\nオ:符号で精度を判断するのは不適切(誤差の絶対値や RMSE などで評価)。\n選択肢ウが標準的には適切と読めるが、設問の趣旨に瑕疵があったため不採点となりました。"},
   {id:"r7-ope-q34",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第34問",title:"第34問　貨物輸送",body:"貨物輸送に関する記述として、最も適切なものはどれか。",options:[{key:"ア",label:"RORO船とトラクター・トレーラを組み合わせると、ドライバーが乗船しない無人航送が可能となる。"},{key:"イ",label:"特別積合せ運送は、複数の荷主の貨物を仕分けや積合せをせずに混載して運ぶ方式である。"},{key:"ウ",label:"モーダルシフトはトラック輸送が中心となるため、コンテナリゼーションの普及を阻害する。"},{key:"エ",label:"標準貨物自動車運送約款によると、待機時間料は運賃に含まれており別途請求はできない。"},{key:"オ",label:"営業用トラックの輸送費は、自家用トラックの輸送費よりも高くなる傾向がある。"}],correct:"ア",explanation:"ア 正:RORO船は車両単位で乗下船する貨物船。トレーラ部分のみを乗船させればドライバーは同乗せず、無人航送が可能。\nイ 誤:特別積合せ運送は複数荷主の貨物を仕分け・積合せする(=混載便)。\nウ 誤:モーダルシフトはトラックから鉄道・船舶への転換でコンテナ化を促進。\nエ 誤:標準約款では待機時間料は別途請求可能(2017年改正以降)。\nオ 誤:営業用は規模の経済により自家用より割安なのが一般的。"},
   {id:"r7-ope-q35",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第35問",title:"第35問　ユニットロード",body:"ユニットロードシステムに関する記述として、最も適切なものはどれか。",options:[{key:"ア",label:"DFL(Design for Logistics)とは、製品の梱包形態を物流の効率性ではなく顧客満足度を最優先に設計することを意味する。"},{key:"イ",label:"PI(Physical Internet)とは、輸送機関ごとに独自の規格を採用することで効率化を図る考え方である。"},{key:"ウ",label:"複合一貫輸送とは、1つの輸送機関で複数の物流ルートを使い分ける輸送形態である。"},{key:"エ",label:"ユニットロードシステムは、貨物を一定の標準化された単位にまとめて取り扱うことで荷役効率を高める。"},{key:"オ",label:"ユニットロードシステムは、荷役効率の向上に資するが、輸送効率や保管効率の向上には寄与しない。"}],correct:"エ",explanation:"エ 正:ユニットロードシステムの定義そのもの。\nア 誤:DFLは物流効率を考慮した製品設計。\nイ 誤:PIは規格の統一・共有を進める考え方。\nウ 誤:複合一貫輸送は複数の輸送機関を組み合わせる輸送。\nオ 誤:ユニットロード化は輸送・保管効率にも寄与する。"},
-  {id:"r7-ope-q36",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第36問",title:"第36問　帰り荷確保(復路積載)",body:"ある運送事業者は、これまでA地点からX地点への片道輸送だけを担っていた。今後、B地点→Y地点への配送業務も新たに受託することで、車両の帰り荷を確保し、A→X→Y(空車)→B→Y…のような連続運行に切り替える。この取り組みの前後を比較した記述として、最も適切なものはどれか。",options:[{key:"ア",label:"実車距離は減少し、実車率は上昇する。"},{key:"イ",label:"実車距離は減少し、積載率は上昇する。"},{key:"ウ",label:"実車距離は変わらず、実車率は低下する。"},{key:"エ",label:"実車距離は変わらず、実車率も変わらない。"},{key:"オ",label:"実車距離は変わらず、実車率は上昇するが、積載率は変わらない。"}],correct:"オ",explanation:"取り組みにより各実車区間は変化せず、空車距離が大幅に縮小する。総走行距離(分母)が減少し、実車距離(分子)は同じなので実車率(=実車距離/総走行距離)は上昇する。一方、積載率(=実積載量/最大積載量)は1便ごとに最大積載で運ぶ点は変わらず変化しない。"},
+  {id:"r7-ope-q36",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第36問",title:"第36問　帰り荷の確保(実車率・積載率)",body:"荷主であるA社とB社は、X県とY県の間でトラックによる輸送をそれぞれ行っており、このたび協力して帰り荷の確保という取組を行った。取組前を基準とした取組後の変化に関する記述として、最も適切なものを下記の解答群から選べ。次の条件のみを踏まえて解答すること。\n\n【取組前】A社・B社のトラックが1台ずつ運行。A社：倉庫Ax→倉庫Ayへ実車走行後、Ay→Axへ空車走行。B社：倉庫By→倉庫Bxへ実車走行後、Bx→Byへ空車走行。\n【取組後】1台で、①Ax→Ay(A社・実車)→②Ay→By(空車)→③By→Bx(B社・実車)→④Bx→Ax(空車)と連続運行(帰り荷の確保)。\n【条件】最大積載量は取組前後の全輸送で同じ。輸送貨物量はAx→AyとBy→Bxで同じ。実車率＝走行距離に占める実車走行距離の割合、積載率＝最大積載量に占める実積載量の割合。取組後の空車距離(②Ay-By間＋④Ax-Bx間)は、取組前の空車距離(Ax-Ay間＋Bx-By間)の合計より短い。",figure:"OpeQ36",options:[{key:"ア",label:"トラックの実車率と積載率はともに変わらなかった。"},{key:"イ",label:"トラックの実車率と積載率はともに上昇した。"},{key:"ウ",label:"トラックの実車率と積載率はともに低下した。"},{key:"エ",label:"トラックの実車率は変わらなかったが、積載率は上昇した。"},{key:"オ",label:"トラックの実車率は上昇したが、積載率は変わらなかった。"}],correct:"オ",explanation:"実車距離：取組前(Ax→Ay＋By→Bx)と取組後(①Ax→Ay＋③By→Bx)は同じ。\n空車距離：条件より、取組後(②Ay-By＋④Ax-Bx)は取組前(Ax-Ay＋Bx-By)より短い。\nよって総走行距離(＝実車距離＋空車距離)は減少。実車率(＝実車距離／総走行距離)は、分子が同じで分母が小さくなるため上昇する。\n積載率：各実車区間で最大積載量まで積む点(輸送貨物量・最大積載量とも同じ)は変わらないため、積載率は変わらない。\nしたがって「実車率は上昇したが、積載率は変わらなかった」＝オが正しい。\nア 誤:実車率が上昇するため。\nイ 誤:積載率は変わらないため。\nウ 誤:実車率は上昇するため。\nエ 誤:実車率は上昇し、積載率は変わらないため(逆の記述)。"},
   {id:"r7-ope-q37",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第37問",title:"第37問　物流センター",body:"物流センターに関する記述として、最も適切なものはどれか。",options:[{key:"ア",label:"ASN(事前出荷情報)は、入荷側が出荷予定情報を作成して出荷側に送信する電子データである。"},{key:"イ",label:"DPS(Digital Picking System)は摘み取り方式、DAS(Digital Assort System)は種まき方式と呼ばれるピッキング支援システムである。"},{key:"ウ",label:"トラック予約受付システムは、特定の時間帯にトラックを集中させることで荷役効率を高める仕組みである。"},{key:"エ",label:"パレタイザは、パレット単位で仕分けされた商品を顧客別に分類する装置である。"},{key:"オ",label:"物流ABC(活動基準原価計算)は、管理可能なコストと不可能なコストの双方を含めて算出する。"}],correct:"イ",explanation:"イ 正:DPS=摘み取り方式、DAS=種まき方式。\nア 誤:ASNは出荷側が作成して入荷側に送信する。\nウ 誤:トラック予約受付は集中を防ぎ、平準化するシステム。\nエ 誤:パレタイザは荷を自動的にパレット上に積み付ける装置。\nオ 誤:物流ABCは管理可能なコストを活動別に算出する手法。"},
   {id:"r7-ope-q38",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第38問",title:"第38問　GTIN-14",body:"集合包装用商品コードであるGTIN-14に関する記述として、最も適切なものはどれか。",options:[{key:"ア",label:"GTIN-14の先頭1桁(インジケータ)は、商品の生産国を表す。"},{key:"イ",label:"GTIN-14は消費者向け単品(バラ商品)の標準的なコードである。"},{key:"ウ",label:"GTIN-14は、日本国内向けに独自に定められた集合包装用コードである。"},{key:"エ",label:"GTIN-14は、12桁のJANコードに2桁のインジケータを付加したものである。"},{key:"オ",label:"GTIN-14のインジケータは、ボール・ケース・パレットなど包装階層を識別する。"}],correct:"オ",explanation:"オ 正:GTIN-14の先頭1桁(インジケータ)は包装階層(1=ボール、2=ケース、3=パレット等)を識別する。\nア 誤:生産国コードはGS1事業者コードの一部であり、インジケータとは別。\nイ 誤:GTIN-14は集合包装用(段ボール単位など)。\nウ 誤:GTIN-14は国際標準。\nエ 誤:GTIN-14=1桁(インジケータ)+13桁(GTIN-13ベース)で構成。"},
   {id:"r7-ope-q39",exam:"中小企業診断士",year:"R7",subject:"運営管理",examLabel:"R7 運営管理",parent:"第39問",title:"第39問　生鮮標準商品コード",body:"生鮮標準商品コードに関する次の文中の空欄A〜Cに入る語句の組み合わせとして、最も適切なものを下記の解答群から選べ。\n\n生鮮標準商品コードは、生鮮取引【A】の標準化を進めるため【B】を対象に整備されたコードである。先頭4桁は【C】で始まる。",options:[{key:"ア",label:"A：EOS　B：青果・水産・食肉の3品　C：4912"},{key:"イ",label:"A：EOS　B：青果のみ　C：4922"},{key:"ウ",label:"A：EDI　B：青果・水産・食肉・花きの4品　C：4922"},{key:"エ",label:"A：POS　B：水産のみ　C：4912"},{key:"オ",label:"A：POS　B：花きのみ　C：4922"}],correct:"ウ",explanation:"生鮮標準商品コードはEDI(電子データ交換)の標準化を目的に、青果・水産・食肉・花きの4品目を対象として整備されている。先頭4桁は4922で始まる。"},
@@ -763,7 +871,7 @@ function Figure({fig}){ const Comp = FIGURE_MAP[fig]; return Comp ? <Comp/> : nu
 
 /* ---------- Header ---------- */
 function Header({view, setView}){
-  const tabs=[["home","ホーム"],["history","履歴"],["settings","設定"]];
+  const tabs=[["home","ホーム"],["browse","一覧"],["history","履歴"],["settings","設定"]];
   return (
     <div style={{position:"sticky", top:0, zIndex:10, background:"rgba(255,255,255,0.92)", backdropFilter:"blur(8px)", borderBottom:`1px solid ${C.border}`}}>
       <div style={{maxWidth:"760px", margin:"0 auto", padding:"12px 16px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:"12px"}}>
@@ -1107,6 +1215,93 @@ function SettingsView({settings, setSettings}){
   );
 }
 
+/* ---------- BrowseView (全問題の参照) ---------- */
+function BrowseItem({q}){
+  const [open, setOpen] = useState(false);
+  const parsed = parseExplanation(q.explanation, q.options.map(o=>o.key));
+  return (
+    <div style={{background:C.card, border:`1px solid ${C.border}`, borderRadius:"12px", boxShadow:sh, overflow:"hidden"}}>
+      <button onClick={()=>setOpen(o=>!o)} style={{width:"100%", textAlign:"left", padding:"13px 15px", display:"flex", gap:"10px", alignItems:"center", cursor:"pointer", background:"transparent", border:"none"}}>
+        <span style={{flexShrink:0, fontSize:"12px", fontWeight:700, color:"#fff", background:C.accent, borderRadius:"6px", padding:"2px 8px"}}>{q.parent}</span>
+        <span style={{flex:1, minWidth:0, fontSize:"14px", fontWeight:600, color:C.text}}>{q.title.replace(/^第\d+問[ 　]*(設問\d+[ 　]*)?/,"")}</span>
+        <span style={{flexShrink:0, fontSize:"18px", color:C.muted, transform: open?"rotate(180deg)":"none", transition:"transform .15s"}}>⌄</span>
+      </button>
+      {open && (
+        <div style={{padding:"4px 16px 18px"}}>
+          <div style={{fontSize:"14px", color:C.sub, lineHeight:1.75, whiteSpace:"pre-wrap", marginBottom:"6px"}}>{q.body}</div>
+          {q.figure && <Figure fig={q.figure}/>}
+          <div style={{display:"flex", flexDirection:"column", gap:"7px", margin:"12px 0"}}>
+            {q.options.map(opt=>{
+              const ok = !q.acceptAll && opt.key===q.correct;
+              return (
+                <div key={opt.key} style={{display:"flex", gap:"10px", alignItems:"flex-start", padding:"9px 11px", borderRadius:"9px",
+                  border:`1.5px solid ${ok?C.good:C.border}`, background: ok?C.goodSoft:"#fff"}}>
+                  <span style={{flexShrink:0, width:"23px", height:"23px", borderRadius:"6px", display:"flex", alignItems:"center", justifyContent:"center",
+                    fontWeight:700, fontSize:"13px", background: ok?C.good:"#f1f5f9", color: ok?"#fff":C.sub}}>{opt.key}</span>
+                  <span style={{fontSize:"13.5px", color:C.text, lineHeight:1.6, paddingTop:"1px"}}>{opt.label}</span>
+                </div>
+              );
+            })}
+          </div>
+          <div style={{fontSize:"13px", fontWeight:700, color: q.acceptAll?C.warnText:C.good, marginBottom:"10px"}}>
+            {q.acceptAll ? "正解: 不採点(全員正解扱い)" : `正解: ${q.correct}`}
+          </div>
+          {parsed.overall && (
+            <div style={{background:"#fafaf9", border:`1px solid ${C.border}`, borderRadius:"10px", padding:"13px", marginBottom:"10px"}}>
+              <div style={{fontSize:"12px", fontWeight:700, color:C.accent, marginBottom:"7px"}}>総合解説</div>
+              <div style={{fontSize:"13.5px", color:C.text, lineHeight:1.8, whiteSpace:"pre-wrap"}}>{parsed.overall}</div>
+            </div>
+          )}
+          {parsed.hasPer && (
+            <div style={{background:"#fafaf9", border:`1px solid ${C.border}`, borderRadius:"10px", padding:"13px"}}>
+              <div style={{fontSize:"12px", fontWeight:700, color:C.accent, marginBottom:"9px"}}>選択肢別解説</div>
+              <div style={{display:"flex", flexDirection:"column", gap:"8px"}}>
+                {q.options.map(opt=>{
+                  const note = parsed.perOption[opt.key]; if(!note) return null;
+                  const ok = opt.key===q.correct;
+                  return (
+                    <div key={opt.key} style={{display:"flex", gap:"8px", alignItems:"flex-start"}}>
+                      <span style={{flexShrink:0, width:"21px", height:"21px", borderRadius:"5px", marginTop:"1px", display:"flex", alignItems:"center", justifyContent:"center",
+                        fontWeight:800, fontSize:"11px", background: ok?C.goodSoft:C.badSoft, color: ok?C.good:C.bad}}>{opt.key}</span>
+                      <div style={{fontSize:"13px", color:C.text, lineHeight:1.7}}><b style={{color: ok?C.good:C.bad}}>{ok?"正":"誤"}</b>　{note}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function BrowseView(){
+  const [subject, setSubject] = useState(allSubjects[0]);
+  const [query, setQuery] = useState("");
+  const list = ALL_QUESTIONS.filter(q => q.subject===subject &&
+    (query.trim()==="" || (q.title+q.body+q.options.map(o=>o.label).join("")).includes(query.trim())));
+  return (
+    <div style={{maxWidth:"760px", margin:"0 auto", padding:"24px 16px 70px"}}>
+      <div style={{fontSize:"18px", fontWeight:700, color:C.text, marginBottom:"4px"}}>問題一覧</div>
+      <div style={{fontSize:"13px", color:C.muted, marginBottom:"16px"}}>全{ALL_QUESTIONS.length}問。科目を選び、各問をタップすると本文・選択肢・正解・解説を確認できます。</div>
+      <div style={{display:"flex", flexWrap:"wrap", gap:"8px", marginBottom:"12px"}}>
+        {allSubjects.map(s=>{
+          const cnt = ALL_QUESTIONS.filter(q=>q.subject===s).length;
+          return (<button key={s} onClick={()=>setSubject(s)} style={chip(subject===s, C.accent)}>{s}<span style={{opacity:.7, marginLeft:"6px", fontSize:"12px"}}>{cnt}</span></button>);
+        })}
+      </div>
+      <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="キーワードで絞り込み(任意)"
+        style={{width:"100%", boxSizing:"border-box", padding:"10px 13px", borderRadius:"10px", border:`1px solid ${C.borderStrong}`, fontSize:"14px", marginBottom:"14px", outline:"none"}}/>
+      <div style={{fontSize:"12px", color:C.muted, marginBottom:"10px"}}>{subject}：{list.length}問</div>
+      <div style={{display:"flex", flexDirection:"column", gap:"9px"}}>
+        {list.map(q=>(<BrowseItem key={q.id} q={q}/>))}
+        {list.length===0 && <div style={{textAlign:"center", color:C.muted, fontSize:"13px", padding:"30px"}}>該当する問題がありません。</div>}
+      </div>
+    </div>
+  );
+}
+
 /* ---------- App ---------- */
 function App(){
   const [view, setView] = useState("home");
@@ -1151,6 +1346,7 @@ function App(){
     <div style={{minHeight:"100vh", background:C.bg, color:C.text}}>
       <Header view={(view==="quiz"||view==="result")?"home":view} setView={(v)=>{setView(v); window.scrollTo(0,0);}}/>
       {view==="home" && <HomeView settings={settings} setSettings={setSettings} startQuiz={startQuiz}/>}
+      {view==="browse" && <BrowseView/>}
       {view==="quiz" && quiz && <QuizView quiz={quiz} idx={idx} onAnswer={recordAnswer} onNext={nextQ} onFinish={finishQuiz}/>}
       {view==="result" && result && <ResultView result={result} onHome={()=>{setView("home"); window.scrollTo(0,0);}} onRetry={()=>startQuiz(lastPool||ALL_QUESTIONS)}/>}
       {view==="history" && <HistoryView history={history} onClear={()=>setHistory([])}/>}
