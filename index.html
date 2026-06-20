@@ -4,6 +4,24 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>中小企業診断士 過去問トレーナー</title>
+<!-- ▼▼ ここから PWA 用の追記(既存の <title> の下に貼り付け) ▼▼ -->
+<meta name="theme-color" content="#f5f5f4" />
+<meta name="description" content="中小企業診断士 第1次試験の過去問(令和6・7年度・全7科目)を詳しい解説つきで学べる学習アプリ。" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<link rel="icon" href="/icons/icon-192.png" sizes="192x192" type="image/png" />
+<link rel="apple-touch-icon" href="/icons/icon-192.png" />
+<script>
+  // Service Worker を登録(PWA要件 / オフライン表示)
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js').catch(function (e) {
+        console.warn('SW register failed:', e);
+      });
+    });
+  }
+</script>
+<!-- ▲▲ PWA 用の追記ここまで ▲▲ -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
